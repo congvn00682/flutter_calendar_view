@@ -103,6 +103,18 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
 
   final ScrollController scrollController;
 
+  /// set offset horizontal for time line
+  final double horizontalX;
+
+  /// set size for bulletRadius
+  final double bulletRadius;
+
+  /// Dot color.
+  final Color? dotColor;
+
+  /// Dot inSize.
+  final double dotInSize;
+
   /// Defines a single day page.
   const InternalDayViewPage({
     Key? key,
@@ -133,6 +145,10 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
     required this.dayDetectorBuilder,
     required this.showHalfHours,
     required this.halfHourIndicatorSettings,
+    this.horizontalX = 0,
+    this.bulletRadius = 5,
+    this.dotColor,
+    this.dotInSize = 5,
   }) : super(key: key);
 
   @override
@@ -224,6 +240,10 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
                           height: height,
                           heightPerMinute: heightPerMinute,
                           timeLineWidth: timeLineWidth,
+                          horizontalX: horizontalX,
+                          bulletRadius: bulletRadius,
+                          dotColor: dotColor,
+                          dotInSize: dotInSize,
                         ),
                       ),
                   ],

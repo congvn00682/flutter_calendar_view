@@ -174,6 +174,15 @@ class CurrentTimeLinePainter extends CustomPainter {
   /// Radius of bullet.
   final double bulletRadius;
 
+  /// set offset horizontal for time line
+  final double horizontalX;
+
+  /// Dot color.
+  final Color? dotColor;
+
+  /// Dot inSize.
+  final double dotInSize;
+
   /// Paints a single horizontal line at [offset].
   CurrentTimeLinePainter({
     this.showBullet = true,
@@ -181,13 +190,16 @@ class CurrentTimeLinePainter extends CustomPainter {
     required this.height,
     required this.offset,
     this.bulletRadius = 5,
+    this.dotInSize = 5,
+    this.horizontalX = 0,
+    this.dotColor,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawLine(
-      Offset(offset.dx, offset.dy),
-      Offset(size.width, offset.dy),
+      Offset(offset.dx - 100, offset.dy),
+      Offset(size.width , offset.dy),
       Paint()
         ..color = color
         ..strokeWidth = height,
@@ -195,7 +207,9 @@ class CurrentTimeLinePainter extends CustomPainter {
 
     if (showBullet)
       canvas.drawCircle(
-          Offset(offset.dx, offset.dy), bulletRadius, Paint()..color = color);
+          Offset(offset.dx - horizontalX, offset.dy), bulletRadius, Paint()..color = color);
+      canvas.drawCircle(
+          Offset(offset.dx - horizontalX, offset.dy), dotInSize, Paint()..color = dotColor ?? color);
   }
 
   @override

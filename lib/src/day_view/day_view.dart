@@ -201,6 +201,18 @@ class DayView<T extends Object?> extends StatefulWidget {
   /// Callback for the Header title
   final HeaderTitleCallback? onHeaderTitleTap;
 
+  /// set offset horizontal for time line
+  final double horizontalX;
+
+  /// set size for bulletRadius
+  final double bulletRadius;
+
+  /// Dot color.
+  final Color? dotColor;
+
+  /// Dot inSize.
+  final double dotInSize;
+
   /// Main widget for day view.
   const DayView({
     Key? key,
@@ -243,6 +255,10 @@ class DayView<T extends Object?> extends StatefulWidget {
     this.halfHourIndicatorSettings,
     this.startDuration = const Duration(hours: 0),
     this.onHeaderTitleTap,
+    this.horizontalX = 0,
+    this.bulletRadius = 5,
+    this.dotColor,
+    this.dotInSize = 5,
   })  : assert(!(onHeaderTitleTap != null && dayTitleBuilder != null),
             "can't use [onHeaderTitleTap] & [dayTitleBuilder] simultaneously"),
         assert(timeLineOffset >= 0,
@@ -445,6 +461,10 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                             showHalfHours: widget.showHalfHours,
                             halfHourIndicatorSettings:
                                 _halfHourIndicatorSettings,
+                            horizontalX: widget.horizontalX,
+                            bulletRadius: widget.bulletRadius,
+                            dotColor: widget.dotColor,
+                            dotInSize: widget.dotInSize,
                           ),
                         );
                       },

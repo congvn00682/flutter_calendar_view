@@ -35,14 +35,30 @@ class LiveTimeIndicator extends StatefulWidget {
   /// Defines height occupied by one minute.
   final double heightPerMinute;
 
+  /// set offset horizontal for time line
+  final double horizontalX;
+
+  /// set size for bulletRadius
+  final double bulletRadius;
+
+  /// Dot color.
+  final Color? dotColor;
+
+  /// Dot inSize.
+  final double dotInSize;
+
   /// Widget to display tile line according to current time.
-  const LiveTimeIndicator(
-      {Key? key,
-      required this.width,
-      required this.height,
-      required this.timeLineWidth,
-      required this.liveTimeIndicatorSettings,
-      required this.heightPerMinute})
+  const LiveTimeIndicator({Key? key,
+    required this.width,
+    required this.height,
+    required this.timeLineWidth,
+    required this.liveTimeIndicatorSettings,
+    required this.heightPerMinute,
+    this.horizontalX = 0,
+    this.bulletRadius = 5,
+    this.dotColor,
+    this.dotInSize = 5,
+  })
       : super(key: key);
 
   @override
@@ -86,10 +102,14 @@ class _LiveTimeIndicatorState extends State<LiveTimeIndicator> {
       painter: CurrentTimeLinePainter(
         color: widget.liveTimeIndicatorSettings.color,
         height: widget.liveTimeIndicatorSettings.height,
+        horizontalX: widget.horizontalX,
         offset: Offset(
           widget.timeLineWidth + widget.liveTimeIndicatorSettings.offset,
           _currentDate.getTotalMinutes * widget.heightPerMinute,
         ),
+        bulletRadius: widget.bulletRadius,
+        dotColor: widget.dotColor ?? widget.liveTimeIndicatorSettings.color,
+        dotInSize: widget.dotInSize,
       ),
     );
   }
@@ -153,7 +173,7 @@ class TimeLine extends StatelessWidget {
               _timelinePositioned(
                 topPosition: hourHeight * i - timeLineOffset + _halfHourHeight,
                 bottomPosition:
-                    height - (hourHeight * (i + 1)) + timeLineOffset,
+                height - (hourHeight * (i + 1)) + timeLineOffset,
                 hour: i,
                 minutes: 30,
               ),
@@ -367,24 +387,26 @@ class PressDetector extends StatelessWidget {
               bottom: height - (heightPerSlot * (i + 1)),
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => onDateTap?.call(
-                  DateTime(
-                    date.year,
-                    date.month,
-                    date.day,
-                    0,
-                    minuteSlotSize.minutes * i,
-                  ),
-                ),
-                onLongPress: () => onDateLongPress?.call(
-                  DateTime(
-                    date.year,
-                    date.month,
-                    date.day,
-                    0,
-                    minuteSlotSize.minutes * i,
-                  ),
-                ),
+                onTap: () =>
+                    onDateTap?.call(
+                      DateTime(
+                        date.year,
+                        date.month,
+                        date.day,
+                        0,
+                        minuteSlotSize.minutes * i,
+                      ),
+                    ),
+                onLongPress: () =>
+                    onDateLongPress?.call(
+                      DateTime(
+                        date.year,
+                        date.month,
+                        date.day,
+                        0,
+                        minuteSlotSize.minutes * i,
+                      ),
+                    ),
                 child: SizedBox(width: width, height: heightPerSlot),
               ),
             ),
