@@ -216,6 +216,9 @@ class DayView<T extends Object?> extends StatefulWidget {
   /// Flag to display half hours time line
   final bool showHalfHoursTimeLine;
 
+  /// Default height for TimeLine
+  final bool? isDefaultHeightEventSmaller20;
+
   /// Main widget for day view.
   const DayView({
     Key? key,
@@ -263,6 +266,7 @@ class DayView<T extends Object?> extends StatefulWidget {
     this.dotColor,
     this.dotInSize = 5,
     this.showHalfHoursTimeLine = false,
+    this.isDefaultHeightEventSmaller20,
   })  : assert(!(onHeaderTitleTap != null && dayTitleBuilder != null),
             "can't use [onHeaderTitleTap] & [dayTitleBuilder] simultaneously"),
         assert(timeLineOffset >= 0,
@@ -470,6 +474,8 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
                             dotColor: widget.dotColor,
                             dotInSize: widget.dotInSize,
                             showHalfHoursTimeLine: widget.showHalfHoursTimeLine,
+                            isDefaultHeightEventSmaller20:
+                                widget.isDefaultHeightEventSmaller20,
                           ),
                         );
                       },

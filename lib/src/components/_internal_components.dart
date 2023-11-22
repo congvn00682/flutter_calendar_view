@@ -48,7 +48,8 @@ class LiveTimeIndicator extends StatefulWidget {
   final double dotInSize;
 
   /// Widget to display tile line according to current time.
-  const LiveTimeIndicator({Key? key,
+  const LiveTimeIndicator({
+    Key? key,
     required this.width,
     required this.height,
     required this.timeLineWidth,
@@ -58,8 +59,7 @@ class LiveTimeIndicator extends StatefulWidget {
     this.bulletRadius = 5,
     this.dotColor,
     this.dotInSize = 5,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
   _LiveTimeIndicatorState createState() => _LiveTimeIndicatorState();
@@ -173,7 +173,7 @@ class TimeLine extends StatelessWidget {
               _timelinePositioned(
                 topPosition: hourHeight * i - timeLineOffset + _halfHourHeight,
                 bottomPosition:
-                height - (hourHeight * (i + 1)) + timeLineOffset,
+                    height - (hourHeight * (i + 1)) + timeLineOffset,
                 hour: i,
                 minutes: 30,
               ),
@@ -238,6 +238,9 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
 
   final EventScrollConfiguration scrollNotifier;
 
+  /// Default height for TimeLine
+  final bool? isDefaultHeightEventSmaller20;
+
   /// A widget that display event tiles in day/week view.
   const EventGenerator({
     Key? key,
@@ -250,6 +253,7 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
     required this.date,
     required this.onTileTap,
     required this.scrollNotifier,
+    this.isDefaultHeightEventSmaller20,
   }) : super(key: key);
 
   /// Arrange events and returns list of [Widget] that displays event
@@ -266,7 +270,33 @@ class EventGenerator<T extends Object?> extends StatelessWidget {
     return List.generate(events.length, (index) {
       return Positioned(
         top: events[index].top,
-        bottom: events[index].bottom,
+        bottom: (isDefaultHeightEventSmaller20 ?? false)
+            ? events[index]
+                        .endDuration
+                        .difference(events[index].startDuration)
+                        .inMinutes
+                        .toDouble() <
+                    20
+                ? (events[index].bottom +
+                        (events[index]
+                                .endDuration
+                                .difference(events[index].startDuration)
+                                .inMinutes
+                                .toDouble() *
+                            3)) -
+                    (events[index]
+                            .endDuration
+                            .difference(events[index].startDuration)
+                            .inMinutes
+                            .toDouble() *
+                        (60 /
+                            events[index]
+                                .endDuration
+                                .difference(events[index].startDuration)
+                                .inMinutes
+                                .toDouble()))
+                : events[index].bottom
+            : events[index].bottom,
         left: events[index].left,
         right: events[index].right,
         child: GestureDetector(
@@ -387,26 +417,24 @@ class PressDetector extends StatelessWidget {
               bottom: height - (heightPerSlot * (i + 1)),
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () =>
-                    onDateTap?.call(
-                      DateTime(
-                        date.year,
-                        date.month,
-                        date.day,
-                        0,
-                        minuteSlotSize.minutes * i,
-                      ),
-                    ),
-                onLongPress: () =>
-                    onDateLongPress?.call(
-                      DateTime(
-                        date.year,
-                        date.month,
-                        date.day,
-                        0,
-                        minuteSlotSize.minutes * i,
-                      ),
-                    ),
+                onTap: () => onDateTap?.call(
+                  DateTime(
+                    date.year,
+                    date.month,
+                    date.day,
+                    0,
+                    minuteSlotSize.minutes * i,
+                  ),
+                ),
+                onLongPress: () => onDateLongPress?.call(
+                  DateTime(
+                    date.year,
+                    date.month,
+                    date.day,
+                    0,
+                    minuteSlotSize.minutes * i,
+                  ),
+                ),
                 child: SizedBox(width: width, height: heightPerSlot),
               ),
             ),

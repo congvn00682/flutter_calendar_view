@@ -118,6 +118,9 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
   /// Flag to display half hours time line
   final bool showHalfHoursTimeLine;
 
+  /// Default height for TimeLine
+  final bool? isDefaultHeightEventSmaller20;
+
   /// Defines a single day page.
   const InternalDayViewPage({
     Key? key,
@@ -153,6 +156,7 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
     this.dotColor,
     this.dotInSize = 5,
     this.showHalfHoursTimeLine = false,
+    this.isDefaultHeightEventSmaller20,
   }) : super(key: key);
 
   @override
@@ -226,6 +230,7 @@ class InternalDayViewPage<T extends Object?> extends StatelessWidget {
                             timeLineWidth -
                             hourIndicatorSettings.offset -
                             verticalLineOffset,
+                        isDefaultHeightEventSmaller20: isDefaultHeightEventSmaller20,
                       ),
                     ),
                     TimeLine(
