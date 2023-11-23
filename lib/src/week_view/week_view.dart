@@ -127,7 +127,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
   final double weekTitleHeight;
 
   /// Builder to build week day.
-  final DateWidgetBuilder? weekDayBuilder;
+  final DateLocalWidgetBuilder? weekDayBuilder;
 
   /// Builder to build week number.
   final WeekNumberBuilder? weekNumberBuilder;
@@ -195,6 +195,9 @@ class WeekView<T extends Object?> extends StatefulWidget {
   /// Callback for the Header title
   final HeaderTitleCallback? onHeaderTitleTap;
 
+  /// Set local Jp or En
+  final bool isJPLocal;
+
   /// Main widget for week view.
   const WeekView({
     Key? key,
@@ -239,6 +242,7 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.safeAreaOption = const SafeAreaOption(),
     this.fullDayEventBuilder,
     this.onHeaderTitleTap,
+    this.isJPLocal = false,
   })  : assert(!(onHeaderTitleTap != null && weekPageHeaderBuilder != null),
             "can't use [onHeaderTitleTap] & [weekPageHeaderBuilder] simultaneously"),
         assert((timeLineOffset) >= 0,
@@ -285,7 +289,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   late DateWidgetBuilder _timeLineBuilder;
   late EventTileBuilder<T> _eventTileBuilder;
   late WeekPageHeaderBuilder _weekHeaderBuilder;
-  late DateWidgetBuilder _weekDayBuilder;
+  late DateLocalWidgetBuilder _weekDayBuilder;
   late WeekNumberBuilder _weekNumberBuilder;
   late FullDayEventBuilder<T> _fullDayEventBuilder;
   late DetectorBuilder _weekDetectorBuilder;
@@ -456,6 +460,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
                             minuteSlotSize: widget.minuteSlotSize,
                             scrollConfiguration: _scrollConfiguration,
                             fullDayEventBuilder: _fullDayEventBuilder,
+                            isJPLocal: widget.isJPLocal,
                           ),
                         );
                       },
@@ -657,14 +662,17 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   }
 
   /// Default builder for week line.
-  Widget _defaultWeekDayBuilder(DateTime date) {
+  /// Set local Jp or En -> Jp: ja, En: en
+  Widget _defaultWeekDayBuilder(DateTime date, bool isJPLocal) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(widget.weekDayStringBuilder?.call(date.weekday - 1) ??
-              Constants.weekTitles[date.weekday - 1]),
+              (isJPLocal
+                  ? Constants.weekTitlesJP[date.weekday - 1]
+                  : Constants.weekTitles[date.weekday - 1])),
           Text(widget.weekDayDateStringBuilder?.call(date.day) ??
               date.day.toString()),
         ],

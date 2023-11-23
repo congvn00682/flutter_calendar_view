@@ -67,7 +67,7 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
   final double verticalLineOffset;
 
   /// Builder for week day title.
-  final DateWidgetBuilder weekDayBuilder;
+  final DateLocalWidgetBuilder weekDayBuilder;
 
   /// Builder for week number.
   final WeekNumberBuilder weekNumberBuilder;
@@ -113,6 +113,9 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
   /// Display full day events.
   final FullDayEventBuilder<T> fullDayEventBuilder;
 
+  /// Set local Jp or En
+  final bool isJPLocal;
+
   /// A single page for week view.
   const InternalWeekViewPage({
     Key? key,
@@ -146,6 +149,7 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
     required this.scrollConfiguration,
     required this.fullDayEventBuilder,
     required this.weekDetectorBuilder,
+    this.isJPLocal = false,
   }) : super(key: key);
 
   @override
@@ -165,7 +169,9 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                 SizedBox(
                   height: weekTitleHeight,
                   width: timeLineWidth + hourIndicatorSettings.offset,
-                  child: weekNumberBuilder.call(filteredDates[0]),
+
+                  /// Remove first number
+                  // child: weekNumberBuilder.call(filteredDates[0]),
                 ),
                 ...List.generate(
                   filteredDates.length,
@@ -174,6 +180,7 @@ class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
                     width: weekTitleWidth,
                     child: weekDayBuilder(
                       filteredDates[index],
+                      isJPLocal,
                     ),
                   ),
                 )

@@ -35,6 +35,8 @@ typedef WeekDayBuilder = Widget Function(
 
 typedef DateWidgetBuilder = Widget Function(DateTime date);
 
+typedef DateLocalWidgetBuilder = Widget Function(DateTime date, bool isJPLocal);
+
 typedef HeaderTitleCallback = Future<void> Function(DateTime date);
 
 typedef WeekNumberBuilder = Widget? Function(
